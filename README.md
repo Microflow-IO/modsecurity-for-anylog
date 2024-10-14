@@ -52,4 +52,36 @@ Modify the rule files under modsecurity/rules as needed, and restart the contain
  ✔ Container uniwaf  Started                                               10.5s
 ```
 
+进入容器有测试数据和脚本，每秒发送一次样例攻击test-uniwaf.json到15155端口
+```bash
+[root@racknerd-b20bda0 ~]# docker exec -it uniwaf sh
+/ # cd /usr/local/openresty/nginx/conf/modsecurity/
+/usr/local/openresty/nginx/conf/modsecurity # ls
+test.sh            uniwaf-proxy.conf test-uniwaf.json   unicode.mapping
+/usr/local/openresty/nginx/conf/modsecurity # cat test-uniwaf.json 
+{"BEGIN_TIME":"2024-05-30 07:16:48.917","END_TIME":"2024-05-30 07:16:48.918","PROBE_VER":"20240527-128","host":"10.64.1.254","SYSTEM":"Ubuntu 22.04.3","SRC_IP":"192.168.1.105","DST_IP":"192.168.1.55","SRC_PORT":"46152","DST_PORT":"80","NIC":"any","CARD":"br-vmr","CARD_IP":"192.168.1.105","SRC_NET_DELAY":"0.01","DST_NET_DELAY":"0.13","NET_DELAY":"0.14","RST_PKTS":"0","RETRANS_PKTS":"0","BYTES":"1171","HTTP_RESPONSE":"0.792","PAGELOAD":"0.792","RETCODE":"403","METHOD":"GET","URL":"/?t=../../etc/passwd","DOMAIN":"192.168.1.55","FORWARD":"0.0.0.0","AGENT":"curl/7.81.0","REQ_HEADER":"GET /?t=../../etc/passwd HTTP/1.1\r\nHost: 192.168.1.55\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n","REQ_BODY":"","RSP_HEADER":"HTTP/1.1 403 Forbidden\r\nDate: Thu, 30 May 2024 07:16:49 GMT\r\nContent-Type: text/html; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nserver: ZhongKui WAF\r\n\r\n","RSP_BODY":"223sdfalkjsflkajf","L7_PROTOCOL":"http","L4_PROTOCOL":"tcp","message":"jxit","message-type":"comm","gl2_source_collector":"64210464315174928","DISK_RATIO":"46.73","TOTAL_CPU":"4","LICENSE":"Only for POC"}
+/usr/local/openresty/nginx/conf/modsecurity # cat test.sh 
+#!/bin/sh
+
+while true; do 
+  timeout 1 nc -u 127.0.0.1 15155 < test-uniwaf.json 
+  sleep 1
+done
+```
+启动脚本并用tcpdump抓取12201告警输出端口数据包
+```bash
+/usr/local/openresty/nginx/conf/modsecurity # nohup ./test.sh &
+/usr/local/openresty/nginx/conf/modsecurity # nohup: appending output to nohup.out
+/usr/local/openresty/nginx/conf/modsecurity # 
+/usr/local/openresty/nginx/conf/modsecurity # timeout 5 tcpdump -i lo port 12201 -w a.pcap
+tcpdump: listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+2 packets captured
+6 packets received by filter
+```
+打开数据包文件，验证攻击产生的告警
+```bash
+/usr/local/openresty/nginx/conf/modsecurity # cat a.pcap 
+{"rule_id":"932160","alert_engine":"modsecurity","time":"2024-05-30 07:16:48","message":"jxit","forward":"0.0.0.0","retcode":"403","source":"","src_ip":"192.168.1.105","dst_ip":"192.168.1.55","geoip":"","src_port":"46152","dst_port":"80","host":"10.64.1.254","domain":"192.168.1.55","url":"/?t=../../etc/passwd","method":"GET","msg":"Remote command execution: Discover Unix Shell code","matched":"Matched \"Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:t' (Value: `../../etc/passwd' )","severity":"2","req_header":"GET /?t=../../etc/passwd HTTP/1.1\r\nHost: 192.168.1.55\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n","req_body":"","rsp_header":"HTTP/1.1 403 Forbidden\r\nDate: Thu, 30 May 2024 07:16:49 GMT\r\nContent-Type: text/html; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nserver: ZhongKui WAF\r\n\r\n","rsp_body":"223sdfalkjsflkajf"}
+```
+
 
