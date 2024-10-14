@@ -52,7 +52,7 @@ You can modify rule files in modsecurity/rules, restart the container for change
  ✔ Container uniwaf  Started                                               10.5s
 ```
 
-Entercontainer check test data and script, sending test-uniwaf.json to port 15155 once per second
+Enter container check test data and script, sending test-uniwaf.json to port 15155 once per second
 
 ```bash
 [root@racknerd-b20bda0 ~]# docker exec -it uniwaf sh
