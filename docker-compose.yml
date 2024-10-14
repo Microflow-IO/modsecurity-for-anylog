@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  uniwaf:
+    image: registry.jxit.net.cn:5000/uniserver/uniwaf:git-25
+    container_name: uniwaf
+    environment:
+      LISTEN_PORT: 15155
+      OUTPUT: 127.0.0.1:12201
+      RULEPATH: /usr/local/openresty/nginx/conf/modsecurity/modsecurity.conf
+    command:
+    - "sh"
+    - "-xc"
+    - | 
+      uniwaf -a -l $${LISTEN_PORT} -c $${RULEPATH} -s $${OUTPUT} -p 127.0.0.1
+      sleep 88888888888888
+    volumes:
+      - ./modsecurity:/usr/local/openresty/nginx/conf/modsecurity
