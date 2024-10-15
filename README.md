@@ -1,3 +1,71 @@
+<img src="https://raw.githubusercontent.com/MicroflowSentinel/microflow.sentinel/blob/main/github_microflow.png?raw=true" alt="logo" style="float:left; margin-right:10px;" />
+
+
+
+# ModSecurity for Anylog
+
+
+
+## 🎬Background 
+
+How to achieve application-level lateral movement attack detection and sensitive data abnormal behavior warning without affecting the environment and business, without blind spots, in cloud and cloud-native environments, is two difficulties in the industry; 
+
+## 🛠Resolvent
+
+ModSecurity is a famous WAF engine, but the original version of ModSecurity can only detect Raw Packet, which is usually only used for traditional architecture and cloud boundary security; 
+
+Microflow Sentinel (hereinafter referred to as MFS) can obtain fine-grained traffic logs inside cloud and cloud-native environments in an ultra-lightweight way; 
+
+If we modify ModSecurity to analyze the HTTP fine-grained logs output by MFS, we can, in principle, fully leverage ModSecurity's detection capabilities to detect various application-level lateral movement attacks and sensitive data behavior anomalies within the cloud and cloud-native environments. 
+
+## 📠MSA Introduction
+
+ModSecurity for Anylog (hereinafter referred to as MSA) is based on the above background and method. 
+
+It is a modified version of ModSecurity for all application logs. It can not only analyze JSON logs from MFS probes, but also enable attack detection on any application and business logs through user configuration. 
+
+### Cloud Traffic Analysis and Risk Detection Architecture  
+
+```mermaid  
+graph TB  
+    subgraph "Cloud and Cloud-Native Environment"  
+        VM1["Virtual Machine 1 (with MFS)"]  
+        VM2["Virtual Machine 2 (with MFS)"]  
+        Node1["Node 1 (with MFS)"]  
+        Node2["Node 2 (with MFS)"]  
+    end  
+
+    Middleware["Data Middleware"]  
+    MSA["ModSecurity for Anylog (MSA)"]  
+    AnalyticsPlatform["Data Analytics Platform / SOC"]  
+
+    VM1 -->|"JSON over UDP"| Middleware  
+    VM2 -->|"JSON over UDP"| Middleware  
+    Node1 -->|"JSON over UDP"| Middleware  
+    Node2 -->|"JSON over UDP"| Middleware  
+
+    Middleware -->|"JSON Data"| AnalyticsPlatform  
+    Middleware -->|"JSON Data"| MSA  
+
+    MSA -->|"Alerts (Syslog)"| AnalyticsPlatform  
+
+    classDef vm fill:#e1f5fe,stroke:#01579b,stroke-width:2px;  
+    classDef node fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;  
+    classDef middleware fill:#fff3e0,stroke:#e65100,stroke-width:2px;  
+    classDef msa fill:#fce4ec,stroke:#880e4f,stroke-width:2px;  
+    classDef analytics fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;  
+
+    class VM1,VM2 vm;  
+    class Node1,Node2 node;  
+    class Middleware middleware;  
+    class MSA msa;  
+    class AnalyticsPlatform analytics;
+```
+
+## 🤷‍♂️How to Use？
+
+
+
 Clone the code
 
 ```bash
