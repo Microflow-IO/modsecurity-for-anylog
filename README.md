@@ -7,7 +7,7 @@
 
 ## 🎬Background 
 
-How to achieve application-level lateral movement attack detection and sensitive data abnormal behavior warning without affecting the environment and business, without blind spots, in cloud and cloud-native environments, is two difficulties in the industry; 
+How to achieve application-level lateral movement attack detection and sensitive data abnormal behavior warning without affecting the environment and business process, without blind spots, in cloud and cloud-native environments, is two difficulties in the industry; 
 
 ## 🛠Resolvent
 
