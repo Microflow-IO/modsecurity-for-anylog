@@ -1,5 +1,4 @@
-<img src="https://raw.githubusercontent.com/MicroflowSentinel/microflow.sentinel/blob/main/github_microflow.png?raw=true" alt="logo" style="float:left; margin-right:10px;" />
-
+<img src="https://raw.githubusercontent.com/Microflow-IO/microflow-sentinel/main/github_microflow.png" alt="logo" style="float:left; margin-right:10px;" />
 
 
 # ModSecurity for Anylog
