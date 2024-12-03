@@ -32,7 +32,7 @@ It is a modified version of ModSecurity for all application logs. It can not onl
 
 
 
-**lateral movement attack detection architecture **
+**lateral movement attack detection architecture**
 
 ```mermaid  
 graph TB  
