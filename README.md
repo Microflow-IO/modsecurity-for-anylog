@@ -36,7 +36,7 @@ It is a modified version of ModSecurity for all application logs. It can not onl
 
 ```mermaid  
 graph TB  
-    subgraph "Cloud and Cloud-Native Environment"  
+    subgraph "Cloud and Cloud-Native"  
         VM1["Virtual Machine 1 (with Nano)"]  
         VM2["Virtual Machine 2 (with Nano)"]  
         Node1["Node 1 (with Nano Pod)"]  
