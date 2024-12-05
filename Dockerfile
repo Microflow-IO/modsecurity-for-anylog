@@ -41,3 +41,4 @@ COPY --from=builder /uniwaf/lib/libmsutil.so /usr/local/lib
 COPY --from=builder /uniwaf/bin/uniwaf /usr/local/bin
 
 COPY modsecurity/ /usr/local/openresty/nginx/conf/modsecurity
+
