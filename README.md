@@ -107,7 +107,7 @@ Use docker compose up -d to start the container
  ✔ Network modsecurity-for-anylog_default  Created                                   0.3s 
  ✔ Container uniwaf                        Started                                   0.4s 
 [root@racknerd-b20bda0 modsecurity-for-anylog]# docker ps | grep uniwaf
-82a5bbb5f1ee   registry.jxit.net.cn:5000/uniserver/uniwaf:git-25     "sh -xc 'uniwaf -a -…"   12 seconds ago   Up 11 seconds                                               uniwaf
+82a5bbb5f1ee   registry.jxit.net.cn:5000/microflow/mfa:git-19     "sh -xc 'uniwaf -a -…"   12 seconds ago   Up 11 seconds                                               uniwaf
 ```
 
 modsecurity directory stores alert rule files and maps to /usr/local/openresty/nginx/conf/modsecurity/ in the container.
