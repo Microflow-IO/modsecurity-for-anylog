@@ -7,7 +7,6 @@ RUN apk update && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
 
-VOLUME  /ms
 WORKDIR /ms
 
 RUN git clone https://gitee.com/laoyang103/ModSecurity && \
