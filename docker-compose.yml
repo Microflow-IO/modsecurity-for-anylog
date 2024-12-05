@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   uniwaf:
-    image: registry.jxit.net.cn:5000/uniserver/uniwaf:git-25
+    image: registry.jxit.net.cn:5000/microflow/mfa:git-19
     container_name: uniwaf
     environment:
       LISTEN_PORT: 15155
