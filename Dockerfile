@@ -1,6 +1,7 @@
 FROM registry.jxit.net.cn:5000/alpine:3.19.1 AS builder
 
-RUN apk update && \
+RUN sed -i 's@dl-cdn.alpinelinux.org@mirrors.tencent.com@g' /etc/apk/repositories && \
+    apk update && \
     apk add tcpdump vim curl bash build-base gcc zlib-dev tzdata && \
     apk add automake autoconf libtool make curl-dev libxml2-dev pcre-dev && \
     apk add git linux-headers subversion libmaxminddb-dev geoip-dev yajl-dev pcre2-dev && \
@@ -27,7 +28,8 @@ RUN cd /uniwaf && mkdir lib obj bin && make && make install
 
 FROM registry.jxit.net.cn:5000/alpine:3.19.1
 
-RUN apk update && \
+RUN sed -i 's@dl-cdn.alpinelinux.org@mirrors.tencent.com@g' /etc/apk/repositories && \
+    apk update && \
     apk add --no-cache tcpdump geoip vim curl libxml2 pcre zlib libstdc++ yajl libmaxminddb tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
